@@ -65,7 +65,7 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'lims2022',
+        'NAME': 'amc_lims',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
