@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'category_active' %}active{% endblock %}
+
+{% block 'content' %}
+<div class="col-md-12">
+  <div class="card" id="form">
+
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block 'script' %}
+
+<script>
+  function form_load(){
+    $.ajax({
+      url: '{% url 'category_update_api' %}',
+      data: {'id':"{{category.id}}"},
+      type: 'get',
+      dataType: 'json',
+      success:function(data){
+        $('#form').html(data.html_form);
+      },
+    });
+
+  };
+  form_load();
+</script>
+
+{% endblock %}

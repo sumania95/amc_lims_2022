@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>PULL OUT FORM</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta charset="ISO-8859-1">
+    <link rel="icon" href="/static/jvf/JVF_logo.png" type="image/x-icon">
+    <style type="text/css">
+        @page {
+            size: 8.5in 13in portrait;
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+
+            @frame footer {
+            -pdf-frame-content: footer;
+            border-color: #fff;
+            left: 29pt; width: 555pt; top: 909; height: 15pt;
+            }
+        }
+
+        .font8 {
+          font-family: "Arial";
+          font-size: 11px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+  <div class="font8">
+    <table>
+      <tr>
+        <td style="height:70px;text-align: center;"><img src="/static/jvf/JVF_REPORT_LOGO_2.png" alt=""></td>
+      </tr>
+    </table>
+  </div>
+  <div class="font8" style="padding:3px;">
+    <table style="padding:8px;">
+      <tr>
+        <td colspan="4" style="border-top: 0.5px solid #000;border-bottom: 0.5px solid #000;border-left: 0.5px solid #000;"></td>
+        <td colspan="4" style="font-size: 16px;text-align:center;border-top: 0.5px solid #000;border-bottom: 0.5px solid #000;"><u>PULL-OUT FORM</u></td>
+        <td colspan="4" style="font-size: 16px;text-align:center;border-top: 0.5px solid #000;border-bottom: 0.5px solid #000;border-right: 0.5px solid #000;color:red;">NO. {{releasing.control_no|upper}}</td>
+      </tr>
+
+    </table>
+    <table style="border: 0.5px solid #000;text-align:left;">
+      <tr>
+        <td colspan="6">VENDOR : <b>{{releasing.vendor|upper}}</b></td>
+        <td colspan="6">SHIPPED VIA : <b>{{releasing.shipped_via|upper}}</b></td>
+      </tr>
+      <tr>
+        <td colspan="6">INVOICE # : <b>{{releasing.invoice_no|upper}}</b></td>
+        <td colspan="6">DATE CHECKED : <b>{{releasing.date_created}}</b></td>
+      </tr>
+    </table>
+    <table style="border: 0.5px solid #000;">
+      <tr>
+        <td colspan="4" style="text-align:center;"><b>PART NUMBER</b></td>
+        <td colspan="6" style="text-align:center;"><b>DESCRIPTION</b></td>
+        <td colspan="2" style="text-align:center;"><b>QUANTITY</b></td>
+      </tr>
+      {% for p in releasing_detail %}
+      <tr>
+        <td colspan="4">{{p.product.part_number|upper}} </td>
+        <td colspan="6">{{p.product.description|upper}} </td>
+        <td colspan="2">{{p.quantity}} </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="12" style="text-align:center;">No Data Found</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="12" style="text-align:center;">**** NOTHING FOLLOWS ****</td>
+      </tr>
+    </table>
+    <table style="border: 0.5px solid #000;">
+      <tr>
+        <td rowspan="4" colspan="1">
+          <table>
+            <tr>
+              <td colspan="12" style="font-size:9px;"><i>Details:</i></td>
+            </tr>
+            <tr>
+              <td colspan="12" style="text-align:center;"><b>Purchase Order</b></td>
+            </tr>
+          </table>
+        </td>
+        <td colspan="2">Date:</td>
+        <td colspan="9">{{releasing.date_created}}</td>
+      </tr>
+      <tr>
+        <td colspan="2">Customer Name :</td>
+        <td colspan="9">{{releasing.customer_name}}</td>
+      </tr>
+      <tr>
+        <td colspan="2">P.O Number :</td>
+        <td colspan="9">{{releasing.purchase_order_number}}</td>
+      </tr>
+      <tr>
+        <td colspan="2">Payment Terms :</td>
+        <td colspan="9">{{releasing.get_category_display}}</td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td colspan="12" style="border: 0.5px solid #000;vertical-align:top;">
+          <table>
+            <tr>
+              <td colspan="12">Other (Specify)</td>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+              <td colspan="6" >_________________________________________</td>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+              <td colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Approved By</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <table style="border: 0.5px solid #000;text-align:left;">
+      <tr>
+        <td colspan="6" style="vertical-align:top;">RECEIVED BY: <br><b>{{releasing.user.first_name|upper}} {{releasing.user.last_name|upper}}</b></td>
+        <td colspan="6" style="vertical-align:top;">INSPECTED BY: <br></td>
+      </tr>
+      <tr>
+        <td colspan="12">Please attached supporting documents</td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>JVF Masterlist Parts/Products</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta charset="ISO-8859-1">
+    <link rel="icon" href="/static/jvf/JVF_logo.png" type="image/x-icon">
+    <style type="text/css">
+        @page {
+            size: 8.5in 13in portrait;
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+
+            @frame footer {
+            -pdf-frame-content: footer;
+            border-color: #fff;
+            left: 29pt; width: 555pt; top: 909; height: 15pt;
+            }
+        }
+
+        .font8 {
+          font-family: "Arial";
+          font-size: 11px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+  <div id="footer" class="font8" style="text-align:center;opacity:0.5;">
+    <td colspan="12" style="padding: 3px; padding-top:2px;"><i style="font-size:10px;">Page <pdf:pagenumber> of <u><pdf:pagecount></u></i></td>
+  </div>
+  <div class="font8">
+    <table>
+      <!-- <tr>
+        <td style="height:70px;text-align: center;"><img src="/static/jvf/JVF_REPORT_LOGO_2.png" alt=""></td>
+      </tr> -->
+      <td style="text-align:center;">
+        <h3><b>JVF COMMERCIAL & PROJECT DEVELOPMENT SUPPORT SERVICES</b></h3>
+      </td>
+      <tr>
+        <td style="text-align: left;"><b style="font-size:13px;">BRANCH : {{user.branch|upper}}</b></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td style="text-align:left;">Date Generated : {{now}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="font8" style="padding-top:10px;">
+    <table style="border-bottom: 0.5px solid #000;padding-top:3px;padding-left:3px;">
+      <tr style="background-color:#636e72;color:white;">
+        <th style="text-align:center;white-space:nowrap;width:5%;"># </th>
+        <th colspan="5" style="text-align:left;">DESCRIPTION |PART NUMBER</th>
+        <th colspan="2" style="text-align:left;">BRAND </th>
+        <th colspan="2" style="text-align:left;">LOCATION </th>
+        <th style="text-align:center;white-space:nowrap;width:10%;">STOCK</th>
+        <th style="text-align:right;white-space:nowrap;width:10%;">PRICE</th>
+      </tr>
+      {% for p in product %}
+      <tr>
+        <td style="text-align:center;">{{forloop.counter}} </td>
+        <td colspan="5">
+          <b>{{p.description|upper}}</b><br>
+          {{p.part_number|upper}}
+        </td>
+        <td colspan="2">{{p.brand.brand|upper}} </td>
+        <td colspan="2">{{p.location|upper}} </td>
+        <td style="text-align:center;white-space:nowrap;width:8%;">{{p.quantity}} </td>
+        <td style="text-align:right;white-space:nowrap;width:18%;">{{p.unit_price}} <small>{{p.get_currency_display}}</small></td>
+      </tr>
+      {% empty %}
+      <td colspan="12" style="text-align:center;">No Data Found</td>
+      {% endfor %}
+    </table>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>RECEIVING REPORT</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta charset="ISO-8859-1">
+    <link rel="icon" href="/static/jvf/JVF_logo.png" type="image/x-icon">
+    <style type="text/css">
+        @page {
+            size: 8.5in 13in portrait;
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+
+            @frame footer {
+            -pdf-frame-content: footer;
+            border-color: #fff;
+            left: 29pt; width: 555pt; top: 909; height: 15pt;
+            }
+        }
+
+        .font8 {
+          font-family: "Arial";
+          font-size: 11px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+  <div class="font8">
+    <table>
+      <tr>
+        <td style="height:70px;text-align: center;"><img src="/static/jvf/JVF_REPORT_LOGO_2.png" alt=""></td>
+      </tr>
+    </table>
+  </div>
+  <div class="font8" style="padding:3px;">
+    <table style="padding:8px;">
+      <tr>
+        <td colspan="4" style="border-top: 0.5px solid #000;border-bottom: 0.5px solid #000;border-left: 0.5px solid #000;"></td>
+        <td colspan="4" style="font-size: 16px;text-align:center;border-top: 0.5px solid #000;border-bottom: 0.5px solid #000;">RECEIVING REPORT</td>
+        <td colspan="4" style="font-size: 16px;text-align:center;border-top: 0.5px solid #000;border-bottom: 0.5px solid #000;border-right: 0.5px solid #000;color:red;">NO. {{receiving.control_no|upper}}</td>
+      </tr>
+
+    </table>
+    <table style="border: 0.5px solid #000;text-align:left;">
+      <tr>
+        <td colspan="6">VENDOR : <b>{{receiving.vendor|upper}}</b></td>
+        <td colspan="6">SHIPPED VIA : <b>{{receiving.shipped_via|upper}}</b></td>
+      </tr>
+      <tr>
+        <td colspan="6">INVOICE # : <b>{{receiving.invoice_no|upper}}</b></td>
+        <td colspan="6">DATE CHECKED : <b>{{receiving.date_created}}</b></td>
+      </tr>
+    </table>
+    <table style="border: 0.5px solid #000;">
+      <tr>
+        <td colspan="3"><b>PART NUMBER</b></td>
+        <td colspan="2"><b>QUANTITY</b></td>
+        <td colspan="4"><b>DESCRIPTION</b></td>
+        <td colspan="3"><b>CONDITION</b></td>
+      </tr>
+      {% for p in receiving_detail %}
+      <tr>
+        <td colspan="3">{{p.product.part_number|upper}} </td>
+        <td colspan="2">{{p.quantity}} </td>
+        <td colspan="4">{{p.product.description|upper}} </td>
+        <td colspan="3">{{p.condition|upper}} </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="12" style="text-align:center;">No Data Found</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="12" style="text-align:center;">**** NOTHING FOLLOWS ****</td>
+      </tr>
+      <tr>
+        <td colspan="12" style="text-align:left;">REMARKS : <p></p></td>
+      </tr>
+
+    </table>
+    <table style="border: 0.5px solid #000;text-align:left;">
+      <tr>
+        <td colspan="6" style="vertical-align:top">RECEIVED BY: <br><b>{{receiving.user.first_name|upper}} {{receiving.user.last_name|upper}}</b></td>
+        <td colspan="6" style="vertical-align:top">INSPECTED BY: <br></td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+</body>
+</html>

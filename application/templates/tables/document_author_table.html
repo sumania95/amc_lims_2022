@@ -1,0 +1,78 @@
+{% load humanize %}
+{% for p in document %}
+<tr>
+  <td>{{forloop.counter}}</td>
+  <td style="white-space:normal;">
+    {{p.author.fullname}}
+  </td>
+  <td class="btn-page">
+    <form class="custom-form-remove" data-url="{% url 'document_author_remove_save_api' p.id %}" method="post">
+      <button type="submit" class="btn btn-danger btn-sm confirm-add" name="button"><i class="feather icon-trash"></i></button>
+    </form>
+  </td>
+</tr>
+{% empty %}
+<tr>
+  <td colspan="12" class="text-center">No data available</td>
+</tr>
+{% endfor %}
+{% block 'script' %}
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("a").tooltip({container:'table'});
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    var csrftoken = getCookie('csrftoken');
+    $(".custom-form-remove").submit(function (event) {
+      event.preventDefault();
+      Swal.fire({
+        text: "Are you sure do you want to remove this record?",
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then((result) => {
+
+        if (result.value === true){
+          var form = $(this);
+          $.ajax({
+            url: form.attr('data-url'),
+            data: form.serialize(),
+            type: form.attr('method'),
+            dataType: 'json',
+            beforeSend: function(xhr, settings) {
+              if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+            },
+            success: function(data){
+              Toast.fire({
+                type: data.message_type,
+                title: data.message_title
+              });
+              if (data.url){
+                window.location.href = data.url;
+              }
+              load_data();
+            },
+            error:function(error){
+              Toast.fire({
+                type: 'error',
+                title: 'ERROR Connection Lost.'
+              });
+            },
+
+          })
+          return false;
+        }
+      });
+
+    });
+  });
+
+</script>
+{% endblock %}

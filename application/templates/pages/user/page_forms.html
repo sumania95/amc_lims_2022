@@ -1,0 +1,87 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% block 'link' %}
+<link rel="stylesheet" href="{% static 'premium/assets/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css'%}">
+{% endblock %}
+<div class="card-body">
+  <form method="POST" enctype="multipart/form-data" data-url="{{URL_CREATE_UPDATE}}" class="custom-form">
+    {{form|crispy}}
+    <button type="submit" class="btn btn-sm btn-{{btn_name}}" id="{{btn_submit}}">{{btn_title}}</button>
+  </form>
+</div>
+{% block 'script' %}
+
+<script src="{% static 'premium/assets/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js'%}"></script>
+<script>
+  var $datepicker1 = $('#id_date_from');
+  $datepicker1.datepicker({
+    autoclose: true,
+    format : 'yyyy-mm-dd',
+  });
+  var $datepicker2 = $('#id_date_to');
+  $datepicker2.datepicker({
+    autoclose: true,
+    format : 'yyyy-mm-dd',
+  });
+</script>
+
+<script>
+  $(document).on('click', '#button-submit', function(){
+    return confirm('Are you sure you want to add this?');
+  });
+  $(document).on('click', '#button-change', function(){
+    return confirm('Are you sure you want to change this?');
+  });
+  $(document).ready(function () {
+    var csrftoken = getCookie('csrftoken');
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+
+    $(".custom-form").submit(function (event) {
+      $("#button-submit").addClass("disabled", true);
+      event.preventDefault();
+      var form = $(this);
+      $.ajax({
+        url: form.attr('data-url'),
+        data: form.serialize(),
+        type: form.attr('method'),
+        dataType: 'json',
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+          $("#button-submit").addClass("disabled", true);
+        },
+        success: function(data){
+          Toast.fire({
+            type: data.message_type,
+            title: data.message_title
+          });
+          if (data.valid){
+            if (data.url){
+              window.location.href = data.url;
+            }
+            form_load();
+            $("#button-submit").addClass("disabled", false);
+          }
+        },
+        error:function(error){
+          Toast.fire({
+            type: 'error',
+            title: 'ERROR Connection Lost.'
+          });
+          $("#button-submit").addClass("disabled", false);
+        },
+
+      })
+      return false;
+    });
+
+  });
+
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'document_active' %}active{% endblock %}
+
+{% block 'content' %}
+<div class="col-md-12">
+  <div class="card" id="form">
+
+  </div>
+</div>
+
+{% endblock %}
+{% block 'modal' %}
+<div class="modal fade" id="modal-show" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block 'script' %}
+
+<script>
+  function form_load(){
+    $.ajax({
+      url: '{% url 'document_create_api' %}',
+      type: 'get',
+      dataType: 'json',
+      success:function(data){
+        $('#form').html(data.html_form);
+      },
+    });
+
+  };
+  form_load();
+</script>
+
+{% endblock %}

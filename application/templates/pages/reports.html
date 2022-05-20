@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'content' %}
+<div class="col-12" id="dashboard_content">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <label>DOCUMENT RECORDS REPORT LIST</label>
+          <form action="{% url 'document_list_report' %}" target="_blank" method="GET">
+            <table>
+              <tr>
+                <td>
+                  <select class="form-control ml-1" name="document_type" id="document_type">
+                    {% for p in document_type %}
+                    <option value="{{p.id}}">{{p.document_type}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <select id="ddlyear" class="form-control ml-2" name="ddlyear"></select>
+                </td>
+                <td>
+                  <button type="submit" class="btn btn-secondary btn-sm ml-3"><i class="feather icon-printer"></i>Print Report</button>
+                </td>
+              </tr>
+            </table>
+          </form>
+
+          <hr class="m-2">
+        </div>
+      </div>
+    </div>
+    <!-- <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <label>CATEGORY REPORT LIST (by year)</label>
+          <table>
+            <tr>
+              <td>
+                <select class="form-control ml-1" name="document_type" id="document_type">
+                  {% for p in document_type %}
+                  <option value="{{p.id}}">{{p.document_type}}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <select id="category_year_report" class="form-control ml-2" name="category_year_report"></select>
+              </td>
+              <td>
+                <a href="#" type="button" class="btn btn-secondary btn-sm ml-3" name="button"><i class="feather icon-printer"></i>Print Report</a>
+              </td>
+            </tr>
+          </table>
+          <hr class="m-2">
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <label>CATEGORY REPORT LIST (by terms)</label>
+          <table>
+            <tr>
+              <td>
+                <select class="form-control ml-1" name="terms" id="terms">
+                  {% for p in terms %}
+                  <option value="{{p.id}}">{{p.description}}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <a href="#" type="button" class="btn btn-secondary btn-sm ml-3" name="button"><i class="feather icon-printer"></i>Print Report</a>
+              </td>
+            </tr>
+          </table>
+          <hr class="m-2">
+        </div>
+      </div>
+    </div> -->
+    <div class="card-body">
+      <div class="row">
+        <form action="{% url 'summary_terms_report' %}" target="_blank" method="GET">
+        <div class="col-md-12">
+          <label>SUMMARY TERMS REPORT</label>
+          <table>
+            <tr>
+              <td>
+                <select class="form-control ml-1" name="id" id="id">
+                  {% for p in terms %}
+                  <option value="{{p.id}}">{{p.description}}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <button type="submit" class="btn btn-secondary btn-sm ml-3" name="button"><i class="feather icon-printer"></i>Print Report</button>
+              </td>
+            </tr>
+          </table>
+          <!-- <hr class="m-2"> -->
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block 'script' %}
+<script>
+  function year_load() {
+      //Reference the DropDownList.
+      var ddlyear = $("#ddlyear");
+      // ddlyear.append("<option value='ALL'>ALL</option>")
+      //Determine the Current Year.
+      var currentYear = (new Date()).getFullYear();
+
+      //Loop and add the Year values to DropDownList.
+      for (var i = currentYear; i >= 2010; i--) {
+          var option = $("<option />");
+          option.html(i);
+          option.val(i);
+
+          ddlyear.append(option);
+      }
+  };
+
+  function category_year_report() {
+      //Reference the DropDownList.
+      var category_year_report = $("#category_year_report");
+      // category_year_report.append("<option value='ALL'>ALL</option>")
+      //Determine the Current Year.
+      var currentYear = (new Date()).getFullYear();
+
+      //Loop and add the Year values to DropDownList.
+      for (var i = currentYear; i >= 2010; i--) {
+          var option = $("<option />");
+          option.html(i);
+          option.val(i);
+
+          category_year_report.append(option);
+      }
+  };
+  category_year_report();
+  year_load();
+</script>
+<script>
+  <script src="{% static 'premium/assets/js/plugins/apexcharts.min.js'%}"></script>
+  <script src="{% static 'premium/assets/js/pages/chart-apex.js'%}"></script>
+</script>
+{% endblock %}

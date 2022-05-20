@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<title>AMC | File Management System</title>
+	<!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 11]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="">
+	<meta name="author" content="Codedthemes" />
+	<!-- Favicon icon -->
+	<link rel="icon" href="{% static 'jvf/JVF_logo.png'%}" type="image/x-icon">
+	<!-- vendor css -->
+	<link rel="stylesheet" href="{% static 'premium/assets/css/style.css'%}">
+	<style>
+	.bg-img {
+			/* The image used */
+			background-image: url("{% static 'jvf/JVF_Banner.jpeg' %}");
+
+			/* Control the height of the image */
+			min-height: 100vh;
+
+			/* Center and scale the image nicely */
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			position: relative;
+		}
+	</style>
+
+</head>
+<div class="auth-wrapper bg-img">
+	<div class="auth-content">
+		<div class="card">
+			<div class="row align-items-center">
+				<div class="col-md-12">
+					<div class="card-body">
+						<form method="POST" action="{% url 'login' %}">
+							<h4 class="mb-3 f-w-400 text-center">LOGIN</h4>
+							{% load crispy_forms_tags %}
+							{% csrf_token %}
+							{{form|crispy}}
+							<button type="submit" class="btn btn-block btn-primary mb-4">Signin</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="{% static 'premium/assets/js/vendor-all.min.js'%}"></script>
+<script src="{% static 'premium/assets/js/plugins/bootstrap.min.js'%}"></script>
+<script src="{% static 'premium/assets/js/waves.min.js'%}"></script>
+</body>
+</html>

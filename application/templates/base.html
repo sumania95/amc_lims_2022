@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+<head>
+  <title>AMC | LEGISLATIVE INFORMATION TRACKING SYSTEM</title>
+  <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 11]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js'%}"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <!-- Meta -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="">
+  <meta name="author" content="Codedthemes" />
+  <link rel="icon" href="{% static 'tagana_an/ico_logo.jpg'%}" type="image/x-icon">
+
+  <!-- Favicon icon -->
+  <link rel="stylesheet" href="{% static 'premium/assets/sweetalert2/sweetalert2.min.css'%}">
+  <!-- vendor css -->
+  <link rel="stylesheet" href="{% static 'premium/assets/css/style.css'%}">
+  <style>
+  .swal2-container {
+    z-index: 20000 !important;
+  }
+	.bg-img {
+			/* The image used */
+			background-image: url("{% static 'tagana_an/ico_logo.jpg' %}");
+
+			/* Control the height of the image */
+			min-height: 100vh;
+
+			/* Center and scale the image nicely */
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: 50vh 50vh;
+			position: relative;
+		}
+	</style>
+  {% block 'link' %}
+
+  {% endblock %}
+
+</head>
+<body class="">
+  <!-- [ Pre-loader ] start -->
+  <div class="loader-bg">
+    <div class="loader-track">
+      <div class="loader-fill"></div>
+    </div>
+  </div>
+  <!-- [ Pre-loader ] End -->
+  <!-- [ navigation menu ] start -->
+  <nav class="pcoded-navbar menupos-fixed menu-dark">
+    <div class="navbar-wrapper  ">
+      <div class="navbar-content scroll-div " >
+        <ul class="nav pcoded-inner-navbar ">
+          <li class="nav-item pcoded-menu-caption">
+            <label>Main</label>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'dashboard' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+          </li>
+          <li class="nav-item {% block 'document_active' %}{% endblock %}">
+            <a href="{% url 'document' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-upload-cloud"></i></span><span class="pcoded-mtext">Records Document</span></a>
+          </li>
+          <!-- <li class="nav-item {% block 'minutes_active' %}{% endblock %}">
+            <a href="#" class="nav-link "><span class="pcoded-micon"><i class="feather icon-upload"></i></span><span class="pcoded-mtext">Session Minutes</span></a>
+          </li> -->
+          <li class="nav-item {% block 'category_active' %}{% endblock %}">
+            <a href="{% url 'category' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span class="pcoded-mtext">Category</span></a>
+          </li>
+          <li class="nav-item {% block 'terms_active' %}{% endblock %}">
+            <a href="{% url 'terms' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-folder"></i></span><span class="pcoded-mtext">Terms</span></a>
+          </li>
+          <li class="nav-item {% block 'author_active' %}{% endblock %}">
+            <a href="{% url 'author' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Authors</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'reports' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-printer"></i></span><span class="pcoded-mtext">Reports</span></a>
+          </li>
+          <!-- {% if user.user_type.classification == '1' %}
+          <li class="nav-item {% block 'user_active' %}{% endblock %}">
+            <a href="{% url 'user' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Users</span></a>
+          </li>
+          {% endif %} -->
+          <li class="nav-item">
+            <a href="{% url 'security' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-lock"></i></span><span class="pcoded-mtext">Security</span></a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{% url 'logout' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-log-out text-danger"></i></span><span class="pcoded-mtext">Sign Out</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <header class="navbar pcoded-header navbar-expand-lg navbar-light headerpos-fixed header-green">
+    <div class="m-header">
+      <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+      <a href="{% url 'dashboard' %}" class="b-brand text-center">
+        <i class="feather icon-folder mr-2"></i>LITS | BACK OFFICE
+      </a>
+      <a href="#!" class="mob-toggler">
+        <i class="feather icon-more-vertical"></i>
+      </a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <!-- {{user.username}} -->
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li>
+          <div class="dropdown drp-user">
+            <a href="#!" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="{% static 'user_images/user_male.png' %}" width="40px" height="40px" class="img-radius wid-40" alt="User-Profile-Image">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right profile-notification">
+  						<div class="pro-head">
+  							<img src="{% static 'user_images/user_male.png' %}" class="img-radius" alt="User-Profile-Image">
+  							<span>{{user.first_name}} {{user.last_name}}</span>
+  						</div>
+  						<ul class="pro-body">
+  							<li><a href="#" class="dropdown-item"><i class="feather icon-user"></i>My Account</a></li>
+                <li><a href="#" class="dropdown-item"><i class="feather icon-lock"></i>Change Password</a></li>
+  							<li><a href="https://www.buymeacoffee.com/sumania95" target="_blank" class="dropdown-item"><i class="feather icon-phone"></i>Buy Me a Coffee</a></li>
+                <li><a href="{% url 'logout' %}" class="dropdown-item"><i class="feather icon-log-out"></i>Logout</a></li>
+  						</ul>
+  					</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <!-- [ Header ] end -->
+
+
+
+  <!-- [ Main Content ] start -->
+  <div class="pcoded-main-container">
+    <div class="pcoded-content">
+      <!-- [ Main Content ] start -->
+      <div class="row">
+        <div class="col-md-12">
+          <h5>{{title}}</h5>
+        </div>
+        {% block 'content' %}
+        {% endblock %}
+      </div>
+      <!-- [ Main Content ] end -->
+    </div>
+  </div>
+  {% block 'modal' %}
+
+  {% endblock %}
+
+  <!-- Warning Section Ends -->
+
+  <!-- Required Js -->
+  <script src="{% static 'premium/assets/js/vendor-all.min.js'%}"></script>
+  <script src="{% static 'premium/assets/js/plugins/bootstrap.min.js'%}"></script>
+  <script src="{% static 'premium/assets/js/pcoded.min.js'%}"></script>
+
+  <!-- Apex Chart -->
+  <script src="{% static 'premium/assets/js/plugins/apexcharts.min.js'%}"></script>
+  <script src="{% static 'premium/assets/sweetalert2/sweetalert2.min.js'%}"></script>
+  <script type="text/javascript">
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+  </script>
+  <script type="text/javascript">
+
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = jQuery.trim(cookies[i]);
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    };
+  </script>
+
+  {% block 'script' %}
+  {% endblock %}
+
+  <!-- custom-chart js -->
+
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+{% load humanize %}
+{% for p in author %}
+<tr>
+  <td>{{forloop.counter|add:start}}</td>
+  <td style="white-space:normal;">
+    {{p.fullname}}
+  </td>
+  <td class="btn-page">
+    <form class="custom-form-add" data-url="{% url 'terms_author_update_create_save_api' p.id %}" method="post">
+      <input type="hidden" name="terms_id" id="terms_id" value="{{terms_id}}">
+      <button type="submit" class="btn btn-success btn-sm confirm-add" name="button"><i class="feather icon-plus"></i></button>
+    </form>
+  </td>
+</tr>
+{% empty %}
+<tr>
+  <td colspan="12" class="text-center">No data available</td>
+</tr>
+{% endfor %}
+{% block 'script' %}
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("a").tooltip({container:'table'});
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    var csrftoken = getCookie('csrftoken');
+
+    $(".custom-form-add").submit(function (event) {
+      event.preventDefault();
+      var form = $(this);
+      $.ajax({
+        url: form.attr('data-url'),
+        data: form.serialize(),
+        type: form.attr('method'),
+        dataType: 'json',
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        },
+        success: function(data){
+          Toast.fire({
+            type: data.message_type,
+            title: data.message_title
+          });
+          if (data.url){
+            window.location.href = data.url;
+          }
+          load_data_author_view(start_profile,end_profile);
+          load_data();
+        },
+        error:function(error){
+          Toast.fire({
+            type: 'error',
+            title: 'ERROR Connection Lost.'
+          });
+        },
+
+      })
+      return false;
+    });
+
+  });
+
+</script>
+{% endblock %}

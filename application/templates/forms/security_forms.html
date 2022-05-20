@@ -1,0 +1,58 @@
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+<div class="card-body">
+  <form method="POST" enctype="multipart/form-data" data-url="{% url 'api_security' %}" class="custom-form">
+    {{form|crispy}}
+    <input type="hidden" name="profile_id" value="{{profile.id}}">
+    <button type="submit" class="btn btn-{{btn_name}} mt-2" id="button-submit">{{btn_title}}</button>
+  </form>
+</div>
+
+{% block 'script' %}
+<script>
+  $(document).ready(function () {
+
+    $(document).on('click', '#button-submit', function(){
+      return confirm('Are you sure you want to change this?');
+    });
+
+    var csrftoken = getCookie('csrftoken');
+    $(".custom-form").submit(function (event) {
+      event.preventDefault();
+      var form = $(this);
+      $.ajax({
+        url: form.attr('data-url'),
+        data: form.serialize(),
+        type: form.attr('method'),
+        dataType: 'json',
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        },
+        success: function(data){
+          Toast.fire({
+            type: data.message_type,
+            title: data.message_title
+          });
+          if (data.url){
+            window.location.href = data.url;
+          }
+        },
+        error:function(error){
+          Toast.fire({
+            type: 'error',
+            title: 'ERROR Connection Lost.'
+          });
+        },
+
+      })
+      return false;
+    });
+
+  });
+
+</script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% load crispy_forms_tags %}
+
+{% load static %}
+<div class="modal-header p-2 pt-2 pb-2">
+  <h5 class="modal-title" >{{title}}</h5>
+  <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+</div>
+<div class="modal-body">
+  <div class="input-group mb-2">
+    <input type="search" class="form-control" placeholder="Search...." name="search_author_view" id="search_author_view">
+    <div class="input-group-prepend">
+      <button class="btn btn-primary" id="load_search" type="button"><i class="feather icon-search"></i> SEARCH</button>
+    </div>
+  </div>
+  <table class="table border-bottom">
+    <tbody id="data_table_profile">
+
+    </tbody>
+  </table>
+  <div class="col-md-12 text-center border-bottom">
+    <label id="counter_profile">12 records found.</label>
+  </div>
+</div>
+<div class="modal-header text-center p-2">
+  <ul class="pagination p-0 m-2">
+    <li class="page-item" id="page_prev_profile"><button class="page-link" id="button_prev_profile" href="#!">Prev</button></li>
+    <li class="page-item" id="page_next_profile"><button class="page-link" id="button_next_profile" href="#!">Next</button></li>
+  </ul>
+</div>
+
+{% block 'script' %}
+<script>
+  var start_profile = 0;
+  var end_profile = 5;
+  var counts;
+  function disabled_profile(){
+    if (start_profile === 0){
+      $("#page_prev_profile").addClass("disabled", true);
+    }else{
+      $("#page_prev_profile").removeClass("disabled", false);
+    }
+    if (end_profile >= counts){
+      $("#page_next_profile").addClass("disabled", true);
+    }else{
+      $("#page_next_profile").removeClass("disabled", false);
+    }
+  }
+  function load_data_author_view(start_profile,end_profile){
+    var search_author_view = $("#search_author_view").val();
+    console.log("{{document.id}}")
+    $.ajax({
+      url: '{% url 'document_author_update_view_table_api' %}',
+      type: 'get',
+      data: {start:start_profile,end:end_profile,search:search_author_view,'document_id':'{{document.id}}'},
+      dataType: 'json',
+      success:function(data){
+        counts = data.counter;
+        console.log(counts);
+        if (counts === 0){
+          $('#counter_profile').html(data.counter + " record");
+        }else {
+          $('#counter_profile').html(data.counter + " records");
+        }
+        $('#data_table_profile').html(data.data);
+        disabled_profile();
+      },
+    });
+  };
+  $('#button_prev_profile').click(function() {
+    start_profile-=5
+    end_profile-=5
+    load_data_author_view(start_profile,end_profile);
+  });
+  $('#button_next_profile').click(function() {
+    start_profile+=5
+    end_profile+=5
+    load_data_author_view(start_profile,end_profile);
+  });
+  $('#load_search').click(function() {
+    start_profile = 0;
+    end_profile = 5;
+    load_data_author_view(start_profile,end_profile);
+  });
+  // $('#search_author_view').change(function() {
+  //   start_profile = 0;
+  //   end_profile = 5;
+  //   load_data_author_view(start_profile,end_profile);
+  // });
+  load_data_author_view(start_profile,end_profile);
+</script>
+{% endblock %}

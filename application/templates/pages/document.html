@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'content' %}
+<div class="col-md-12">
+  <div class="card p-0">
+    <div class="card-header btn-page pb-0">
+      <div class="row">
+        <div class="col-md-12">
+          <label>FILTER SECTION</label>
+          <table>
+            <tr>
+              <td>
+                <input type="search" class="form-control float-right" placeholder="Search...." name="search" id="search">
+              </td>
+              <td>
+                <select class="form-control ml-1" name="document_type" id="document_type">
+                  {% for p in document_type %}
+                  <option value="{{p.id}}">{{p.document_type}}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <select id="ddlyear" class="form-control ml-2" name="ddlyear"></select>
+              </td>
+            </tr>
+          </table>
+          <hr class="m-2">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 pb-0">
+          <a href="{% url 'document_create' %}" type="button" class="btn btn-primary btn-sm" name="button"><i class="feather icon-plus-circle mr-1"></i>New Document</a>
+          <!-- <a href="#" type="button" class="btn btn-secondary btn-sm" name="button"><i class="feather icon-printer mr-1"></i>Print Report</a> -->
+        </div>
+        <div class="col-md-6 text-right">
+          <label id="counter"></label>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-2">
+      <!-- <div class="col-md-12 text-center border-top">
+        <label id="counter"></label>
+      </div> -->
+      <div class="table-responsive">
+        <table class="table border table-hover">
+          <thead>
+            <tr>
+              <th width="1%">#</th>
+              <th>Description</th>
+              <th>Author</th>
+              <th width="10%">Action</th>
+            </tr>
+          </thead>
+          <tbody id="data_table">
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer text-center">
+      <ul class="pagination">
+        <li class="page-item" id="page_prev"><button class="page-link" id="button_prev" href="#!">Prev</button></li>
+        <li class="page-item" id="page_next"><button class="page-link" id="button_next" href="#!">Next</button></li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block 'script' %}
+<script>
+  function year_load() {
+      //Reference the DropDownList.
+      var ddlyear = $("#ddlyear");
+      ddlyear.append("<option value='ALL'>ALL</option>")
+      //Determine the Current Year.
+      var currentYear = (new Date()).getFullYear();
+
+      //Loop and add the Year values to DropDownList.
+      for (var i = currentYear; i >= 2010; i--) {
+          var option = $("<option />");
+          option.html(i);
+          option.val(i);
+
+          ddlyear.append(option);
+      }
+  };
+  year_load();
+</script>
+<script>
+  var start = 0;
+  var end = 10;
+  var counts;
+  function disabled(){
+    if (start === 0){
+      $("#page_prev").addClass("disabled", true);
+    }else{
+      $("#page_prev").removeClass("disabled", false);
+    }
+    if (end >= counts){
+      $("#page_next").addClass("disabled", true);
+    }else{
+      $("#page_next").removeClass("disabled", false);
+    }
+  }
+  function load_data(start,end){
+    var search = $("#search").val();
+    var ddlyear = $("#ddlyear").val();
+    console.log(ddlyear);
+    var document_type = $("#document_type").val();
+    $.ajax({
+      url: '{% url 'document_table_api' %}',
+      type: 'get',
+      data: {start:start,end:end,search:search,year:ddlyear,document_type:document_type},
+      dataType: 'json',
+      success:function(data){
+        counts = data.counter;
+        $('#counter').html(data.counter + " record(s)");
+        $('#data_table').html(data.data);
+        disabled();
+      },
+    });
+  };
+  $('#button_prev').click(function() {
+    start-=10
+    end-=10
+    load_data(start,end);
+  });
+  $('#button_next').click(function() {
+    start+=10
+    end+=10
+    load_data(start,end);
+  });
+  $('#search').change(function() {
+    start = 0;
+    end = 10;
+    load_data(start,end);
+  });
+  $('#ddlyear').change(function() {
+    start = 0;
+    end = 10;
+    load_data(start,end);
+  });
+  $('#document_type').change(function() {
+    start = 0;
+    end = 10;
+    load_data(start,end);
+  });
+
+  load_data(start,end);
+</script>
+
+{% endblock %}
