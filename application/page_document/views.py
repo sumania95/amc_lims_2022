@@ -252,8 +252,8 @@ class Document_Author_Update_View_Table_AJAXView(LoginRequiredMixin,View):
         if search or start or end or id:
             try:
                 data['form_is_valid'] = True
-                data['counter'] = self.queryset.exclude(id__in = Document_Author_Abstract.objects.values('author_id').filter(document_id=document_id,user=self.request.user)).filter(Q(lastname__icontains = search)).count()
-                author = self.queryset.exclude(id__in = Document_Author_Abstract.objects.values('author_id').filter(document_id=document_id,user=self.request.user)).filter(Q(lastname__icontains = search)).order_by('lastname')[int(start):int(end)]
+                data['counter'] = self.queryset.exclude(id__in = Document_Author_Abstract.objects.values('author_id').filter(document_id=document_id)).filter(Q(lastname__icontains = search)).count()
+                author = self.queryset.exclude(id__in = Document_Author_Abstract.objects.values('author_id').filter(document_id=document_id)).filter(Q(lastname__icontains = search)).order_by('lastname')[int(start):int(end)]
                 data['data'] = render_to_string(self.template_name,{'author':author,'start':start,'document_id':document_id})
             except Exception as e:
                 raise
@@ -284,8 +284,8 @@ class Document_Author_Update_Table_AJAXView(LoginRequiredMixin,View):
             id = None
         try:
             data['form_is_valid'] = True
-            data['counter'] = self.queryset.filter(document_id=id,user=self.request.user).count()
-            document = self.queryset.filter(document_id=id,user=self.request.user).order_by('author__lastname')
+            data['counter'] = self.queryset.filter(document_id=id).count()
+            document = self.queryset.filter(document_id=id).order_by('author__lastname')
             data['data'] = render_to_string(self.template_name,{'document':document})
         except Exception as e:
             raise

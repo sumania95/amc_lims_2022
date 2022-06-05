@@ -10,7 +10,7 @@
     </td>
     <td>
       {% for p in doc_array.document_author %}
-        {{p.author}}<br>
+        {{p.author.fullname.upper}}<br>
       {% endfor %}
     </td>
     <td class="btn-page">

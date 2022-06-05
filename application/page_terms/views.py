@@ -212,8 +212,8 @@ class Terms_Author_Update_View_Table_AJAXView(LoginRequiredMixin,View):
         if search or start or end or id:
             try:
                 data['form_is_valid'] = True
-                data['counter'] = self.queryset.exclude(id__in = Terms_Author_Abstract.objects.values('author_id').filter(terms_id=terms_id,user=self.request.user)).filter(Q(lastname__icontains = search)).count()
-                author = self.queryset.exclude(id__in = Terms_Author_Abstract.objects.values('author_id').filter(terms_id=terms_id,user=self.request.user)).filter(Q(lastname__icontains = search)).order_by('lastname')[int(start):int(end)]
+                data['counter'] = self.queryset.exclude(id__in = Terms_Author_Abstract.objects.values('author_id').filter(terms_id=terms_id)).filter(Q(lastname__icontains = search)).count()
+                author = self.queryset.exclude(id__in = Terms_Author_Abstract.objects.values('author_id').filter(terms_id=terms_id)).filter(Q(lastname__icontains = search)).order_by('lastname')[int(start):int(end)]
                 data['data'] = render_to_string(self.template_name,{'author':author,'start':start,'terms_id':terms_id})
             except Exception as e:
                 raise
@@ -245,8 +245,8 @@ class Terms_Author_Update_Table_AJAXView(LoginRequiredMixin,View):
         print(id)
         try:
             data['form_is_valid'] = True
-            data['counter'] = self.queryset.filter(terms_id=id,user=self.request.user).count()
-            terms = self.queryset.filter(terms_id=id,user=self.request.user).order_by('author__lastname')
+            data['counter'] = self.queryset.filter(terms_id=id).count()
+            terms = self.queryset.filter(terms_id=id).order_by('author__lastname')
             data['data'] = render_to_string(self.template_name,{'terms':terms})
         except Exception as e:
             raise

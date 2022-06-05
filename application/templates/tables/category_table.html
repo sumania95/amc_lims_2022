@@ -2,7 +2,7 @@
 {% for p in category %}
 <tr>
   <td>{{forloop.counter|add:start}}</td>
-  <td style="white-space:normal;">{{p.category}}</td>
+  <td style="white-space:normal;">{{p.category.upper}}</td>
   <td class="btn-page">
     <a href="{% url 'category_update' p.id %}" type="button" class="btn btn-warning btn-sm" name="button"><i class="feather icon-edit mr-1"></i>Edit</a>
   </td>

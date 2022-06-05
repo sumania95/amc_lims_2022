@@ -3,7 +3,7 @@
 <tr>
   <td>{{forloop.counter}}</td>
   <td style="white-space:normal;">
-    {{p.author.fullname}}
+    {{p.author.fullname.upper}}
   </td>
   <td class="btn-page">
     <form class="custom-form-remove" data-url="{% url 'document_author_remove_save_api' p.id %}" method="post">

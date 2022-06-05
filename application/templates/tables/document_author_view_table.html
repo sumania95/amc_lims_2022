@@ -1,11 +1,11 @@
 {% load humanize %}
 {% for p in document %}
 <tr>
-  <td>{{forloop.counter|add:start}}</td>
+  <td width="10">{{forloop.counter|add:start}}</td>
   <td style="white-space:normal;">
-    {{p.lastname}}, {{p.firstname}} {{p.middlename}}
+    {{p.lastname.upper}}, {{p.firstname.upper}} {{p.middlename.upper}}
   </td>
-  <td class="btn-page">
+  <td width="20" class="btn-page">
     <form class="custom-form-add" data-url="{% url 'document_author_create_save_api' p.id %}" method="post">
       <button type="submit" class="btn btn-success btn-sm confirm-add" name="button"><i class="feather icon-plus"></i></button>
     </form>
