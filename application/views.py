@@ -58,6 +58,7 @@ class Home(LoginRequiredMixin,TemplateView):
             p.file.size
             size+=p.file.size
         context['total_size'] = size
+        print(size)
         return context
 
 class Reports(LoginRequiredMixin,TemplateView):
